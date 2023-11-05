@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-upcoming-gradient {
+    background: linear-gradient(100.66deg, rgb(67, 67, 67) 6.56%, rgb(0, 0, 0) 93.57%);
+  }
+  .bg-new-gradient {
+    background: linear-gradient(135deg, rgb(171, 220, 255) 0%, rgb(3, 150, 255) 100%);
+  }
+  .bg-latest-gradient {
+    background: linear-gradient(rgb(0, 176, 155), rgb(150, 201, 61) 93.57%)
+  }
+  .bg-trending-gradient {
+    background: linear-gradient(-20deg, rgb(43, 88, 118) 0%, rgb(78, 67, 118) 100%)
+  }

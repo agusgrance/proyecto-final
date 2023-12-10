@@ -1,29 +1,39 @@
-import React from "react";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
-import { Eventcalendar, Page, setOptions, localeEs } from "@mobiscroll/react";
+import React, { useEffect, useState } from "react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import moment from "moment";
 
-setOptions({
-  locale: localeEs,
-  theme: "ios",
-  themeVariant: "light",
-});
-
+const localizer = momentLocalizer(moment);
 export function Agenda({ myEvents }) {
-  const dayView = React.useMemo(() => {
-    return {
-      calendar: { type: "week" },
-      agenda: { type: "day" },
-    };
-  }, []);
+  const [events, setEvents] = useState();
+
+  useEffect(() => {
+    const newEvents = myEvents?.map((e) => {
+      return {
+        ...e,
+        start: new Date(e.start),
+        end: new Date(e.end),
+      };
+    });
+    setEvents(newEvents);
+  }, [myEvents]);
 
   return (
-    <Page className="h-full ">
-      <Eventcalendar
-        className="rounded-lg shadow-2xl p-6 bg-white"
-        view={dayView}
-        onEventDoubleClick={(e) => console.log("controlar evento", e)}
-        data={myEvents}
-      />
-    </Page>
+    <div className="h-full">
+      {events && (
+        <Calendar
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: "100%" }}
+          eventPropGetter={(event) => ({
+            style: {
+              backgroundColor: event.color,
+            },
+          })}
+        />
+      )}
+    </div>
   );
 }

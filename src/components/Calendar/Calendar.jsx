@@ -1,68 +1,43 @@
-import React from "react";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import React, { useEffect, useState } from "react";
 import {
-  Eventcalendar,
-  getJson,
-  setOptions,
-  localeEs,
-} from "@mobiscroll/react";
+  Calendar as CalendarComponent,
+  momentLocalizer,
+} from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import moment from "moment";
 
-setOptions({
-  locale: localeEs,
-  theme: "windows",
-  themeVariant: "light",
-});
-
+const localizer = momentLocalizer(moment);
 export function Calendar() {
-  const [mySelectedDate, setSelectedDate] = React.useState(new Date());
-  const [myEvents, setEvents] = React.useState([]);
-
-  React.useEffect(() => {
-    getJson(
-      "https://trial.mobiscroll.com/events/?vers=5",
-      (events) => {
-        setEvents(events);
-      },
-      "jsonp"
-    );
-  }, []);
-
-  const handleDateChange = React.useCallback((event, inst) => {
-    setSelectedDate(event.date);
-  }, []);
-
-  const monthView = React.useMemo(() => {
-    return {
-      calendar: { popover: false, labels: false },
-    };
-  }, []);
-
-  const dayView = React.useMemo(() => {
-    return {
-      agenda: { type: "day" },
-    };
-  }, []);
+  const events = [
+    {
+      title: "Evento 1",
+      start: new Date(2023, 11, 1),
+      end: new Date(2023, 11, 3),
+      color: "green",
+    },
+    {
+      title: "Evento 2",
+      start: new Date(2023, 11, 7),
+      end: new Date(2023, 11, 10),
+      color: "blue",
+    },
+    // Agrega más eventos según sea necesario
+  ];
 
   return (
-    <div className="mbsc-grid md-demo-synchronized-views">
-      <div className="mbsc-row mbsc-no-padding">
-        <div className="mbsc-col-md-8 mbsc-col-12">
-          <Eventcalendar
-            view={monthView}
-            data={myEvents}
-            selectedDate={mySelectedDate}
-            onSelectedDateChange={handleDateChange}
-          />
-        </div>
-        <div className="mbsc-col-md-4 mbsc-col-12 md-col-right">
-          <Eventcalendar
-            view={dayView}
-            data={myEvents}
-            selectedDate={mySelectedDate}
-            onSelectedDateChange={handleDateChange}
-          />
-        </div>
-      </div>
+    <div style={{ height: "100vh" }}>
+      <CalendarComponent
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: "100%" }}
+        eventPropGetter={(event) => ({
+          style: {
+            backgroundColor: event.color,
+          },
+        })}
+      />
     </div>
   );
 }

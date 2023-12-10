@@ -42,9 +42,13 @@ const SignIn = () => {
           body: JSON.stringify(body),
         }
       );
-      const { token } = await response.json();
+      const { token, message } = await response.json();
 
-      sessionStorage.setItem("token", token);
+      if (token) {
+        sessionStorage.setItem("token", token);
+      } else {
+        alert(message);
+      }
 
       reset();
     } catch (e) {

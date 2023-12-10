@@ -1,13 +1,13 @@
 import React from "react";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
-import { Eventcalendar, getJson, Toast, localeEs } from "@mobiscroll/react";
+/* import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import { Eventcalendar, getJson, Toast, localeEs } from "@mobiscroll/react"; */
 
 export function Events() {
   const [myEvents, setEvents] = React.useState([]);
   const [isToastOpen, setToastOpen] = React.useState(false);
   const [toastText, setToastText] = React.useState();
 
-  React.useEffect(() => {
+  /* React.useEffect(() => {
     getJson(
       "https://trial.mobiscroll.com/events/?vers=5",
       (events) => {
@@ -16,7 +16,7 @@ export function Events() {
       "jsonp"
     );
   }, []);
-
+ */
   const closeToast = React.useCallback(() => {
     setToastOpen(false);
   }, []);
@@ -35,7 +35,7 @@ export function Events() {
 
   return (
     <div>
-      <Eventcalendar
+      {/* <Eventcalendar
         theme="windows"
         themeVariant="light"
         locale={localeEs}
@@ -49,7 +49,7 @@ export function Events() {
         message={toastText}
         isOpen={isToastOpen}
         onClose={closeToast}
-      />
+      /> */}
     </div>
   );
 }

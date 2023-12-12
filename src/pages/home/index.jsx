@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { Main } from "../../templates/Main/Main";
 import { EventCard } from "../../components/EventCard/EventCard";
 import { Agenda } from "../../components/Agenda/Agenda";
 import { CreateEventCard } from "../../components/CreateEventCard/CreateEventCard";
+import { EventContext } from "../../store/Events";
 
 function Home() {
   let location = useLocation();
-  const [myEvents, setEvents] = useState();
+
   const token = sessionStorage.getItem("token");
 
-  const fetchData = async () => {
-    const response = await fetch(`${process.env.REACT_APP_PUBLIC_URL}/events`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const data = await response.json();
-    setEvents(data);
-  };
+  const { loadEvents, eventList } = useContext(EventContext);
 
   useEffect(() => {
-    fetchData();
+    loadEvents();
   }, [token]);
 
   if (!token) {
@@ -33,7 +23,7 @@ function Home() {
 
   return (
     <Main page="home">
-      <div className="flex w-full gap-6  h-[80vh] ">
+      <div className="flex w-full gap-6">
         <div className="flex flex-col gap-6 w-full">
           <CreateEventCard />
           <div className="w-full h-full justify-between flex gap-6 ">
@@ -47,7 +37,7 @@ function Home() {
         </div>
 
         <div className="w-full">
-          <Agenda myEvents={myEvents} />
+          <Agenda myEvents={eventList} />
         </div>
       </div>
     </Main>

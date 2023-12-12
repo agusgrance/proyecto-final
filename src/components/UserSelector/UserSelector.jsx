@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -8,43 +8,38 @@ import {
   Avatar,
   Chip,
 } from "@material-ui/core";
+import { getUserList } from "../../api/Guest/getUsers";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    width: "30%",
+    width: "50%",
   },
   chip: {
     margin: theme.spacing(0.5, 0.25),
   },
 }));
 
-const users = [
-  {
-    id: "user1",
-    name: "Usuario 1",
-    avatar: "https://avatars.dicebear.com/api/initials/jh.svg",
-  },
-  {
-    id: "user2",
-    name: "Usuario 2",
-    avatar: "https://avatars.dicebear.com/api/initials/jh.svg",
-  },
-  {
-    id: "user3",
-    name: "Usuario 3",
-    avatar: "https://avatars.dicebear.com/api/initials/jh.svg",
-  },
-
-  // Agrega más usuarios según sea necesario
-];
-
-const UserSelector = () => {
+const UserSelector = ({ users, setUsers }) => {
   const classes = useStyles();
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [usersList, setUsersList] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState(users);
 
   const handleUserChange = (event) => {
     setSelectedUsers(event.target.value);
+    setUsers(event.target.value);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const users = await getUserList();
+      setUsersList(users);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    setSelectedUsers(users);
+  }, [users]);
 
   return (
     <FormControl className={classes.formControl}>
@@ -62,21 +57,21 @@ const UserSelector = () => {
                 key={userId}
                 avatar={
                   <Avatar
-                    alt={users.find((user) => user.id === userId)?.name}
-                    src={users.find((user) => user.id === userId)?.avatar}
+                    alt={usersList.find((user) => user.id === userId)?.username}
+                    src={usersList.find((user) => user.id === userId)?.avatar}
                   />
                 }
-                label={users.find((user) => user.id === userId)?.name}
-                className={classes.chip}
+                label={usersList.find((user) => user.id === userId)?.username}
+                className={usersList.chip}
               />
             ))}
           </div>
         )}
       >
-        {users.map((user) => (
+        {usersList.map((user) => (
           <MenuItem key={user.id} value={user.id}>
             <Avatar alt={user.name} src={user.avatar} />
-            {user.name}
+            {user.username}
           </MenuItem>
         ))}
       </Select>

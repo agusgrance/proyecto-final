@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -6,18 +6,20 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-const DateRangePickerComponent = () => {
-  const [selectedDateRange, setSelectedDateRange] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-  });
+const DateRangePickerComponent = ({ setDateValue, dateValue }) => {
+  const [selectedDateRange, setSelectedDateRange] = useState(dateValue);
 
   const handleDateChange = (dateType, date) => {
     setSelectedDateRange((prevDateRange) => ({
       ...prevDateRange,
       [dateType]: date,
     }));
+    setDateValue(dateType, date);
   };
+
+  useEffect(() => {
+    setSelectedDateRange(dateValue);
+  }, [dateValue]);
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>

@@ -1,28 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Calendar as CalendarComponent,
   momentLocalizer,
 } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
+import { EventContext } from "../../store/Events";
 
 const localizer = momentLocalizer(moment);
 export function Calendar() {
-  const events = [
-    {
-      title: "Evento 1",
-      start: new Date(2023, 11, 1),
-      end: new Date(2023, 11, 3),
-      color: "green",
-    },
-    {
-      title: "Evento 2",
-      start: new Date(2023, 11, 7),
-      end: new Date(2023, 11, 10),
-      color: "blue",
-    },
-    // Agrega más eventos según sea necesario
-  ];
+  const { eventList, loadEvents } = useContext(EventContext);
+
+  const [events, setEvents] = useState(eventList);
+  useEffect(() => {
+    if (eventList.length) {
+      const newEvents = eventList?.map((e) => {
+        return {
+          ...e,
+          start: new Date(e.start),
+          end: new Date(e.end),
+        };
+      });
+
+      setEvents(newEvents);
+    } else {
+      loadEvents();
+    }
+  }, [eventList]);
 
   return (
     <div style={{ height: "100vh" }}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CirclePicker } from "react-color";
 import { makeStyles, Paper, Typography } from "@material-ui/core";
 import clsx from "clsx";
@@ -18,18 +18,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ColorPickerComponent = () => {
+const ColorPickerComponent = ({ color, onColorChange }) => {
   const classes = useStyles();
-  const [selectedColor, setSelectedColor] = useState("#333");
+  const [selectedColor, setSelectedColor] = useState(color);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleColorChange = (color) => {
     setSelectedColor(color.hex);
+    onColorChange(color.hex);
     setIsModalOpen(false);
   };
   const onSelectColor = () => {
     setIsModalOpen(!isModalOpen);
   };
+
+  useEffect(() => {
+    setSelectedColor(color);
+  }, [color]);
 
   return (
     <div>

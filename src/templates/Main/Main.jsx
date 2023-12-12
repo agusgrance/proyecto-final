@@ -8,6 +8,7 @@ const pages = {
   calendar: "My Calendar",
   chat: "Chat",
   profile: "My Profile",
+  event: "Upcoming Event",
 };
 export function Main({ children, page, className }) {
   return (
@@ -17,7 +18,7 @@ export function Main({ children, page, className }) {
       </div>
       <div
         className={clsx(
-          "w-full rounded-[30px] p-9 bg-[#f2f5f9] overflow-hidden"
+          "w-full rounded-[30px] p-9 bg-[#f2f5f9] overflow-scroll"
         )}
       >
         <Header title={pages?.[page] || ""} />

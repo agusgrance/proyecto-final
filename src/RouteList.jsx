@@ -6,6 +6,7 @@ import Home from "./pages/home";
 import Calendar from "./pages/calendar";
 import MyProfile from "./pages/my-profile";
 import Chat from "./pages/chat";
+import EventID from "./pages/Event/[id]";
 
 function RouteList() {
   return (
@@ -16,6 +17,7 @@ function RouteList() {
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/my-profile" element={<MyProfile />} />
       <Route path="/chat" element={<Chat />} />
+      <Route path="/event/:id" element={<EventID />} />
     </Routes>
   );
 }

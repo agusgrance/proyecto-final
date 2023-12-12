@@ -14,7 +14,6 @@ function Calendar() {
   return (
     <Main page={"calendar"}>
       <CalendarComponent />
-      <SpeedDialTooltipOpen />
     </Main>
   );
 }

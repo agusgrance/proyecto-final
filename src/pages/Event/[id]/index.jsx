@@ -80,6 +80,9 @@ export default function EventID() {
       fetchEventData();
     }
   };
+  const onClose = () => {
+    fetchEventData();
+  };
   return (
     <Main page={"event"}>
       <div className="flex gap-4 w-full">
@@ -91,6 +94,7 @@ export default function EventID() {
             isInvited={isInvited}
             onJoin={onJoin}
             onUpdate={onUpdate}
+            onClose={onClose}
           />
         </div>
         <div className="flex w-full">

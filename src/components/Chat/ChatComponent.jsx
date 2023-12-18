@@ -1,28 +1,22 @@
-import React, { useContext, useState } from "react";
-import ContactList from "./ContactList";
-import Message from "./Message";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
+import Avatar from "@mui/material/Avatar";
+import ContactList from "./ContactList";
+import Message from "./Message";
+import clsx from "clsx";
 import { ChatContext } from "../../store/Chat";
 import { getMyUser } from "../../hooks/UseMyUser";
 import { formatDate } from "../../utils/utils";
-const opciones = {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  timeZoneName: "short",
-};
+
 export default function ChatComponent() {
   const [newMessage, setNewMessage] = useState("");
   const [receiver, setReceiver] = useState({});
+  const messagesRef = useRef(null);
+  const { loadChat, messages, sendMessage } = useContext(ChatContext);
 
   const user = getMyUser();
-
-  const { loadChat, messages, sendMessage } = useContext(ChatContext);
 
   const handleContactClick = (contact) => {
     loadChat(user.id, contact.id);
@@ -33,23 +27,34 @@ export default function ChatComponent() {
     try {
       sendMessage(newMessage, user.id, receiver.id);
       loadChat(user.id, receiver.id);
-      setReceiver(null);
       setNewMessage("");
     } catch (error) {}
   };
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
+  }, [messages]);
   return (
     <div className="flex h-[85vh]">
       <ContactList onContact={handleContactClick} />
-      <div className="flex flex-col justify-between w-full border">
+      <div
+        className={clsx("flex flex-col justify-between w-full border", {
+          ["hidden"]: !receiver?.id,
+        })}
+      >
         <div className="flex items-center p-4 border-b-2">
-          <img
+          <Avatar
             src={receiver.avatar}
-            alt="Avatar"
+            alt={receiver.username}
             className="w-10 h-10 rounded-full mr-4"
           />
           <p className="font-bold">{receiver.username}</p>
         </div>
-        <div className="flex-1  h-fit bg-gray-100 p-4 overflow-y-auto">
+        <div
+          className="flex-1  h-fit bg-gray-100 p-4 overflow-y-auto"
+          ref={messagesRef}
+        >
           {messages?.map((message, idx) => (
             <Message
               key={idx}
@@ -60,7 +65,7 @@ export default function ChatComponent() {
           ))}
         </div>
         <div className="aboslute bottom-0">
-          <div className="flex items-center">
+          <form className="flex items-center">
             <TextField
               label="Escribe tu mensaje"
               variant="outlined"
@@ -79,7 +84,7 @@ export default function ChatComponent() {
             >
               Enviar
             </Button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

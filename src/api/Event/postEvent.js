@@ -2,7 +2,7 @@ import { getMyUser } from "../../hooks/UseMyUser";
 
 const CLOUD_UPLOAD_PRESET = "finalWeb";
 const CLOUD_NAME = "dgs8ytgfs";
-const generateImageURL = async (image) => {
+export const generateImageURL = async (image) => {
   try {
     const data = new FormData();
     data.append("file", image);
@@ -54,7 +54,9 @@ export const postEvent = async (eventData) => {
       },
       body: JSON.stringify({
         eventDataList,
-        guestList: eventData.guests,
+        guestList: user?.id
+          ? [...eventData.guests, user?.id]
+          : eventData.guests,
         admin: user.id,
       }),
     });

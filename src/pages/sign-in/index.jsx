@@ -57,7 +57,7 @@ const SignIn = () => {
   };
   return (
     <div className="flex justify-center items-center w-screen h-screen bg-[#eef2f6] overflow-hidden">
-      <div className=" bg-white w-full h-fit max-w-[476px] max-h-[60vh] rounded-xl shadow-2xl	p-10">
+      <div className=" bg-white w-full h-fit max-w-[476px] rounded-xl shadow-2xl	p-10">
         <div className="flex flex-col border-b border-solid border-[#e3e8ef] gap-3 items-center pb-6">
           <h4 className="text-[1.5rem] font-bold text-[#673ab7]">
             Hi, Welcome Back

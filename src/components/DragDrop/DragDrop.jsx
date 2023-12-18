@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 
 function DragDrop({ image, handleImage }) {
@@ -16,7 +16,9 @@ function DragDrop({ image, handleImage }) {
             <p>Imagen subida:</p>
             <img
               className="w-full object-cover"
-              src={URL.createObjectURL(image)}
+              src={
+                typeof image === "string" ? image : URL.createObjectURL(image)
+              }
               alt="Uploaded"
               width={"100%"}
             />

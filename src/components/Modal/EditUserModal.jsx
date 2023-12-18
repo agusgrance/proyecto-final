@@ -1,17 +1,15 @@
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Avatar } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Modal from "./Modal";
 import * as yup from "yup";
 import clsx from "clsx";
 import md5 from "md5";
+import { updateUser } from "../../api/Guest/updateUser";
 
-const SignUp = () => {
-  let location = useLocation();
-
-  const navigate = useNavigate();
-
+const EditUserModal = ({ open, onClose, user, onConfirm }) => {
   const schema = yup.object().shape({
     username: yup.string().required(),
     email: yup.string().email().required(),
@@ -28,11 +26,15 @@ const SignUp = () => {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: user,
+    mode: "all",
   });
 
-  if (sessionStorage.getItem("token")) {
-    return <Navigate to="/" state={{ from: location }} replace />;
-  }
+  React.useEffect(() => {
+    if (user) {
+      reset(user);
+    }
+  }, [user]);
   const onSubmitHandler = async (data) => {
     try {
       const { email, password, username } = data;
@@ -45,33 +47,22 @@ const SignUp = () => {
         password: md5(password),
         avatar,
       };
-      const response = await fetch(
-        `${process.env.REACT_APP_PUBLIC_URL}/sign-up`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
+      const response = await updateUser(user.id, body);
 
-      if (response.ok) {
-        reset();
-        return navigate("/sign-in");
-      }
+      reset();
+      return onConfirm?.();
     } catch (e) {
       console.error(e);
     }
   };
   return (
-    <div className="flex justify-center items-center w-screen h-screen bg-[#eef2f6] overflow-hidden">
-      <div className=" bg-white w-full h-fit max-w-[476px] rounded-xl shadow-2xl p-10">
-        <div className="flex flex-col border-b border-solid border-[#e3e8ef] gap-3 items-center pb-6">
-          <h4 className="text-[1.5rem] font-bold text-[#673ab7]">Sign up</h4>
-          <h6 className="text-base font-normal text-[#697586]">
-            Enter your credentials to continue
-          </h6>
+    <Modal visible={open} handleClose={onClose}>
+      <div className=" bg-white w-full h-fit rounded-xl shadow-2xl	p-10">
+        <div className="flex flex-col gap-3 items-center pb-6">
+          <Avatar
+            src={user?.avatar || ""}
+            sx={{ width: "100px", height: "100px" }}
+          />
           <form
             className="flex flex-col w-full gap-8"
             onSubmit={handleSubmit(onSubmitHandler)}
@@ -89,13 +80,13 @@ const SignUp = () => {
               />
               <TextField
                 {...register("password")}
-                label="Password"
+                label="New Password"
                 variant="outlined"
                 type="password"
               />
               <TextField
                 {...register("confirmPassword")}
-                label="Confirm Password"
+                label="Confirm new Password"
                 variant="outlined"
                 type="password"
               />
@@ -107,21 +98,14 @@ const SignUp = () => {
                 className={clsx("w-full", { ["!bg-[#673ab7]"]: isValid })}
                 disabled={!isValid}
               >
-                Sign Up
+                Editar
               </Button>
             </div>
           </form>
         </div>
-        <div className="flex flex-col items-center p-4">
-          <Link to={"/sign-in"}>
-            <p className="text-[#121926] text-[1rem] font-normal">
-              Already have an account?
-            </p>
-          </Link>
-        </div>
       </div>
-    </div>
+    </Modal>
   );
 };
 
-export default SignUp;
+export default EditUserModal;

@@ -11,6 +11,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { postEvent } from "../../api/Event/postEvent";
 import { EventContext } from "../../store/Events";
 import DragDrop from "../DragDrop/DragDrop";
+import { updateEvent } from "../../api/Event/updateEvent";
+
 const schema = yup.object().shape({
   title: yup.string().required("The Title is a required field."),
   description: yup.string(),
@@ -28,12 +30,10 @@ const initForm = {
   color: "#333",
   guests: [],
 };
-export function CreateEventCard() {
-  const [color, setColor] = useState(initForm.color);
-  const [users, setUsers] = useState([]);
-  const [image, setImage] = useState();
-
-  const { loadEvents } = useContext(EventContext);
+export function CreateEventCard({ isEdit, defaultForm, onClose }) {
+  const [color, setColor] = useState(defaultForm?.color || initForm.color);
+  const [users, setUsers] = useState(defaultForm?.guests || []);
+  const [image, setImage] = useState(defaultForm?.image || null);
 
   const {
     register,
@@ -45,7 +45,7 @@ export function CreateEventCard() {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: initForm,
+    defaultValues: defaultForm || initForm,
     mode: "onChange",
   });
 
@@ -70,13 +70,18 @@ export function CreateEventCard() {
     setUsers(guestList);
   };
   const onSubmitHandler = async (formData) => {
-    await postEvent({ ...formData, image });
+    if (formData.id) {
+      await updateEvent({ ...formData, image, id: formData.id });
+    } else {
+      await postEvent({ ...formData, image });
+    }
     onReset();
-    loadEvents();
+    onClose?.();
   };
   const handleImage = (file) => {
     setImage(file);
   };
+
   return (
     <form
       className={clsx(
@@ -84,7 +89,9 @@ export function CreateEventCard() {
       )}
       onSubmit={handleSubmit(onSubmitHandler)}
     >
-      <h5 className="text-[25px] font-bold m-0">Create Event</h5>
+      <h5 className="text-[25px] font-bold m-0">
+        {!isEdit ? "Crear Evento" : "Editar Evento"}
+      </h5>
       <TextField {...register("title")} label="Title" className="w-full" />
       <div className="flex w-full gap-4 items-center justify-between ">
         <TextField
@@ -110,14 +117,14 @@ export function CreateEventCard() {
         <ColorPickerComponent color={color} onColorChange={handleColorChange} />
         <UserSelector users={users} setUsers={handleGuestChange} />
       </div>
-      <DragDrop handleImage={handleImage} image={image} />
+      <DragDrop isEdit={isEdit} handleImage={handleImage} image={image} />
 
       <div className="flex gap-4">
         <Button type="button" variant="contained" onClick={onReset}>
           Limpiar
         </Button>
         <Button type="submit" variant="contained" disabled={!isValid}>
-          Agregar
+          {isEdit ? "Editar" : "Agregar"}
         </Button>
       </div>
     </form>

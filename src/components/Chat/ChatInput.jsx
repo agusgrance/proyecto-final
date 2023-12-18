@@ -1,14 +1,10 @@
-// src/ChatInput.js
 import React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 
 export const ChatInput = () => {
-  const handleMessageSend = () => {
-    // Aquí puedes implementar la lógica para enviar mensajes
-    console.log("Mensaje enviado");
-  };
+  const handleMessageSend = () => {};
 
   return (
     <div className="flex items-center">
@@ -17,7 +13,6 @@ export const ChatInput = () => {
         variant="outlined"
         fullWidth
         size="small"
-        // Agrega más propiedades según tus necesidades
       />
       <Button
         variant="contained"

@@ -6,7 +6,6 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
@@ -23,6 +22,10 @@ export function HeaderMenu() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleGoToAdmin = () => {
+    setAnchorEl(null);
+    return navigate("/admin");
   };
   const handleSignOut = () => {
     sessionStorage.clear();
@@ -86,24 +89,28 @@ export function HeaderMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handlegoToProfile}>
-          <Avatar src={user?.avatar} />
-          My Profile
-        </MenuItem>
+        <div className="flex flex-col">
+          <MenuItem onClick={handlegoToProfile}>
+            <Avatar src={user?.avatar} />
+            My Profile
+          </MenuItem>
 
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleSignOut}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+          <Divider />
+          {user?.isAdmin && (
+            <MenuItem onClick={handleGoToAdmin}>
+              <ListItemIcon>
+                <Settings fontSize="small" />
+              </ListItemIcon>
+              Admin Settings
+            </MenuItem>
+          )}
+          <MenuItem onClick={handleSignOut}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </div>
       </Menu>
     </React.Fragment>
   );

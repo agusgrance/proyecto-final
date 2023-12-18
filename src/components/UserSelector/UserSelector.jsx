@@ -9,6 +9,7 @@ import {
   Chip,
 } from "@material-ui/core";
 import { getUserList } from "../../api/Guest/getUsers";
+import { getMyUser } from "../../hooks/UseMyUser";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -23,6 +24,7 @@ const UserSelector = ({ users, setUsers }) => {
   const classes = useStyles();
   const [usersList, setUsersList] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState(users);
+  const user = getMyUser();
 
   const handleUserChange = (event) => {
     setSelectedUsers(event.target.value);
@@ -32,7 +34,7 @@ const UserSelector = ({ users, setUsers }) => {
   useEffect(() => {
     const fetchData = async () => {
       const users = await getUserList();
-      setUsersList(users);
+      setUsersList(users?.filter((userItem) => userItem?.id !== user?.id));
     };
     fetchData();
   }, []);

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import Avatar from "@mui/material/Avatar";
 import { ChatContext } from "../../store/Chat";
 
 export default function ContactList({ onContact }) {
@@ -19,9 +20,9 @@ export default function ContactList({ onContact }) {
           onClick={() => onContact(contact)}
         >
           <div className="flex items-center">
-            <img
+            <Avatar
               src={contact.avatar}
-              alt="Avatar"
+              alt={contact.username}
               className="w-10 h-10 rounded-full mr-4"
             />
             <div>

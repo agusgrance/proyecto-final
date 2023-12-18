@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const eventType = {
   upcoming: "Proximo Evento",
-  new: "Nuevo Evento",
+  new: "Nuevos Participantes",
   latest: "Tu ultimo Evento",
   trending: "Evento Popular",
 };
@@ -38,7 +38,9 @@ export function EventCard({ type, event }) {
       </div>
       {username && (
         <div className="flex justify-end">
-          <h6 className="text-[16px] font-normal m-0">hosted by {username}</h6>
+          <h6 className="text-[16px] font-normal m-0">
+            {type === "new" ? "Changes" : "Hosted"} by {username}
+          </h6>
         </div>
       )}
     </div>

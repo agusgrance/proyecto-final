@@ -12,10 +12,6 @@ import { removeEvent } from "../../api/Event/removeEvent";
 import Modal from "../../components/Modal/Modal";
 import { CreateEventCard } from "../../components/CreateEventCard/CreateEventCard";
 import EditUserModal from "../../components/Modal/EditUserModal";
-
-const columns = [{ id: "", label: "" }];
-
-const data = [{ id: 1, nombre: "", descripcion: "" }];
 const DropdownData = [
   { id: 1, value: "Users" },
   { id: 2, value: "Events" },

@@ -6,6 +6,9 @@ import { CreateEventCard } from "../CreateEventCard/CreateEventCard";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import clsx from "clsx";
+import ConfirmModal from "../Modal/ConfirmModal";
+import { useNavigate } from "react-router-dom";
+import { removeEvent } from "../../api/Event/removeEvent";
 
 export default function Event({
   id,
@@ -26,11 +29,26 @@ export default function Event({
   classname,
   imageClassname,
 }) {
+  const navigate = useNavigate();
+
   const [isEditVisible, setIsEditVisible] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
   const guests = guestLists?.map((guest) => guest.guestId);
   const handleClose = () => {
     setIsEditVisible(false);
     onClose?.();
+  };
+  const handleRemoveModal = () => {
+    setIsOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+  const handleConfirmModal = async () => {
+    handleCloseModal();
+    await removeEvent(id);
+    return navigate(`/`);
   };
   return (
     <>
@@ -105,14 +123,24 @@ export default function Event({
             )}
           </div>
           {isHost && (
-            <Button
-              variant="contained"
-              color="info"
-              type="Button"
-              onClick={() => setIsEditVisible(true)}
-            >
-              Editar
-            </Button>
+            <div className="flex justify-evenly w-full ">
+              <Button
+                variant="contained"
+                color="info"
+                type="Button"
+                onClick={() => setIsEditVisible(true)}
+              >
+                Editar
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                type="Button"
+                onClick={handleRemoveModal}
+              >
+                Eliminar
+              </Button>
+            </div>
           )}
         </div>
       </div>
@@ -136,6 +164,14 @@ export default function Event({
           }}
         />
       </Modal>
+      <ConfirmModal
+        open={isOpen && id}
+        content={
+          id && `¿Estas seguro que deseas eliminar el item con el id: ${id}?`
+        }
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmModal}
+      />
     </>
   );
 }

@@ -9,6 +9,7 @@ import clsx from "clsx";
 import ConfirmModal from "../Modal/ConfirmModal";
 import { useNavigate } from "react-router-dom";
 import { removeEvent } from "../../api/Event/removeEvent";
+import GoogleCalendarButton from "../GoogleCalendarButton/GoogleCalendarButton";
 
 export default function Event({
   id,
@@ -85,6 +86,13 @@ export default function Event({
               {formatDate(new Date(end))}
             </h5>
           </div>
+          <GoogleCalendarButton
+            title={title}
+            start={start}
+            end={end}
+            location={location}
+            description={description}
+          />
           <div
             className={clsx("flex justify-around", {
               ["hidden"]: !onJoin || !onUpdate,

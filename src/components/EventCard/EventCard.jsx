@@ -17,9 +17,6 @@ const eventTypeClassName = {
 export function EventCard({ type, event }) {
   const navigate = useNavigate();
 
-  const username =
-    event?.guest?.username || event?.guestLists?.[0]?.guest?.username;
-
   return (
     <div
       className={clsx(

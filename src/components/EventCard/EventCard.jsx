@@ -23,7 +23,7 @@ export function EventCard({ type, event }) {
   return (
     <div
       className={clsx(
-        "flex  flex-col  justify-between w-full h-full rounded-xl text-white p-6 shadow-2xl	cursor-pointer hover:opacity-90",
+        "flex  flex-col justify-between w-full h-full rounded-xl text-white p-6 shadow-2xl	cursor-pointer hover:opacity-90",
         eventTypeClassName?.[type]
       )}
       onClick={() => event?.id && navigate(`/event/${event.id}`)}
@@ -36,10 +36,10 @@ export function EventCard({ type, event }) {
           {event?.title || "No Events yet"}
         </h5>
       </div>
-      {username && (
+      {event?.id && (
         <div className="flex justify-end">
           <h6 className="text-[16px] font-normal m-0">
-            {type === "new" ? "Changes" : "Hosted"} by {username}
+            Click to see more details.
           </h6>
         </div>
       )}

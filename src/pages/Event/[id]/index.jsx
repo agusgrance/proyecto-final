@@ -80,6 +80,21 @@ export default function EventID() {
       fetchEventData();
     }
   };
+
+  const onDeny = async () => {
+    const guestData = eventData.guestLists.find(
+      (guest) => guest.guestId === user.id
+    );
+
+    if (guestData.id) {
+      try {
+        await removeGuestList(guestData?.id);
+        fetchEventData();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
   const onClose = () => {
     fetchEventData();
   };
@@ -95,6 +110,7 @@ export default function EventID() {
             onJoin={onJoin}
             onUpdate={onUpdate}
             onClose={onClose}
+            onDeny={onDeny}
           />
         </div>
         <div className="flex w-full">

@@ -27,6 +27,7 @@ export default function Event({
   onUpdate,
   onClose,
   classname,
+  onDeny,
   imageClassname,
 }) {
   const navigate = useNavigate();
@@ -103,11 +104,11 @@ export default function Event({
                 {isAccepted ? (
                   <Button
                     variant="contained"
-                    color="error"
+                    color="warning"
                     type="Button"
                     onClick={() => onUpdate(false)}
                   >
-                    Rechazar
+                    Cambiar a Pendiente
                   </Button>
                 ) : (
                   <Button
@@ -119,6 +120,14 @@ export default function Event({
                     Aceptar
                   </Button>
                 )}
+                <Button
+                  variant="contained"
+                  color="error"
+                  type="Button"
+                  onClick={() => onDeny?.()}
+                >
+                  Rechazar
+                </Button>
               </>
             )}
           </div>

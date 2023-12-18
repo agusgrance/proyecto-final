@@ -1,7 +1,6 @@
 import { Button, TextField, Avatar } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Modal from "./Modal";
 import * as yup from "yup";
@@ -30,7 +29,7 @@ const EditUserModal = ({ open, onClose, user, onConfirm }) => {
     mode: "all",
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
       reset(user);
     }

@@ -34,7 +34,7 @@ const UserSelector = ({ users, setUsers }) => {
   useEffect(() => {
     const fetchData = async () => {
       const users = await getUserList();
-      setUsersList(users?.filter((userItem) => userItem?.id !== user?.id));
+      setUsersList(users);
     };
     fetchData();
   }, []);

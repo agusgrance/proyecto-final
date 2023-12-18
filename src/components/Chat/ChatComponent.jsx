@@ -35,6 +35,7 @@ export default function ChatComponent() {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
     }
   }, [messages]);
+
   return (
     <div className="flex h-[85vh]">
       <ContactList onContact={handleContactClick} />

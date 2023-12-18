@@ -54,9 +54,7 @@ export const postEvent = async (eventData) => {
       },
       body: JSON.stringify({
         eventDataList,
-        guestList: user?.id
-          ? [...eventData.guests, user?.id]
-          : eventData.guests,
+        guestList: eventData.guests,
         admin: user.id,
       }),
     });

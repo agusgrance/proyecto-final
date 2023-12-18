@@ -11,6 +11,7 @@ import { removeUser } from "../../api/Guest/removeUser";
 import { removeEvent } from "../../api/Event/removeEvent";
 import Modal from "../../components/Modal/Modal";
 import { CreateEventCard } from "../../components/CreateEventCard/CreateEventCard";
+import EditUserModal from "../../components/Modal/EditUserModal";
 
 const columns = [{ id: "", label: "" }];
 
@@ -23,7 +24,11 @@ function Admin() {
   const [columnData, setColumnData] = useState([]);
   const [rowData, setRowData] = useState([]);
   const [eventData, setEventData] = useState({});
+  const [userData, setUserData] = useState({});
+
   const [isEditVisible, setIsEditVisible] = useState(false);
+  const [isEditUserVisible, setIsEditUserVisible] = useState(false);
+
   const token = sessionStorage.getItem("token");
 
   const [selectedItem, setSelectedItem] = useState(DropdownData?.[0]?.value);
@@ -87,19 +92,32 @@ function Admin() {
     );
     return await response.json();
   };
+  const loadProfile = async (id) => {
+    const response = await fetch(
+      `${process.env.REACT_APP_PUBLIC_URL}/guests/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return await response.json();
+  };
   const handleEdit = async (id) => {
-    console.log(`Editar elemento con ID: ${id}`);
     if (selectedItem === "Users") {
-      /*    const users = await getUserList();
-      setRowData(users);
-      addColumnData(Object.keys(users?.[0])); */
+      const users = await loadProfile(id);
+      setUserData(users);
+      setIsEditUserVisible(true);
     } else {
       const currEvent = await fetchEventData(id);
 
       const guests = currEvent?.guestLists?.map((guest) => guest.guestId);
       setEventData({ ...currEvent, guests });
+      setIsEditVisible(true);
     }
-    setIsEditVisible(true);
   };
 
   const handleDelete = async (id) => {
@@ -118,7 +136,9 @@ function Admin() {
   const handleEditClose = () => {
     fetchData();
     setEventData({});
+    setUserData({});
     setIsEditVisible(false);
+    setIsEditUserVisible(false);
   };
 
   return (
@@ -152,6 +172,13 @@ function Admin() {
           }}
         />
       </Modal>
+
+      <EditUserModal
+        open={isEditUserVisible}
+        user={userData}
+        onClose={handleEditClose}
+        onConfirm={handleEditClose}
+      />
     </>
   );
 }

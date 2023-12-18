@@ -53,6 +53,19 @@ function ChatContextProvider({ children }) {
         throw new Error(response.statusText);
       }
       const data = await response.json();
+
+      const responseLoadChat = await fetch(
+        `${process.env.REACT_APP_PUBLIC_URL}/chat/${senderId}/${receiverId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const newChat = await responseLoadChat.json();
+      setMessages(newChat);
       return data;
     } catch (error) {
       console.log("error", error);

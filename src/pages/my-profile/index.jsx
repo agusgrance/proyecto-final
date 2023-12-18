@@ -30,20 +30,22 @@ function MyProfile() {
           <CardUser user={profile} onRefresh={() => loadProfile(id)} />
         </div>
         <div className="grid grid-cols-4 gap-4">
-          {eventList?.map((event) => {
-            return (
-              <div
-                onClick={() => navigate(`/event/${event.id}`)}
-                className="cursor-pointer hover:opacity-70"
-              >
-                <Event
-                  {...event}
-                  classname={"min-h-[450px] h-[450px]"}
-                  imageClassname={"h-[200px]"}
-                />
-              </div>
-            );
-          })}
+          {eventList
+            ?.filter((event) => event?.title)
+            ?.map((event) => {
+              return (
+                <div
+                  onClick={() => navigate(`/event/${event.id}`)}
+                  className="cursor-pointer hover:opacity-70"
+                >
+                  <Event
+                    {...event}
+                    classname={"min-h-[450px] h-[450px]"}
+                    imageClassname={"h-[200px]"}
+                  />
+                </div>
+              );
+            })}
         </div>
       </div>
     </Main>

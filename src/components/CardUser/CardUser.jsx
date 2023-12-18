@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import EditUserModal from "../Modal/EditUserModal";
+import clsx from "clsx";
 
 const CardUser = ({ user, onRefresh }) => {
   const [isEditUser, setIsEditUser] = useState(false);
@@ -26,7 +27,12 @@ const CardUser = ({ user, onRefresh }) => {
           <Typography variant="h5">{user?.username}</Typography>
           <Typography variant="body2">{user?.email}</Typography>
         </CardContent>
-        <CardContent className="flex flex-col justify-evenly gap-4 items-center w-full">
+        <CardContent
+          className={clsx(
+            "flex flex-col justify-evenly gap-4 items-center w-full",
+            { ["hidden"]: !!!onRefresh }
+          )}
+        >
           {/*  <Button variant="outlined">Enviar Mensaje</Button> */}
           <Button
             variant="contained"

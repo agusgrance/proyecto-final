@@ -3,6 +3,8 @@ import { formatDate } from "../../utils/utils";
 import Button from "@mui/material/Button";
 import Modal from "../Modal/Modal";
 import { CreateEventCard } from "../CreateEventCard/CreateEventCard";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import DateRangeIcon from "@mui/icons-material/DateRange";
 import clsx from "clsx";
 
 export default function Event({
@@ -52,13 +54,15 @@ export default function Event({
             {description || "No Description."}
           </p>
           <p className="text-[16px] text-gray-700">
-            {location || "No Location."}
+            <LocationOnIcon /> {location || "No Location."}
           </p>
-          <div className="flex justify-around">
+          <div className="flex justify-start gap-4">
             <h5 className="text-[16px] text-gray-700">
-              {formatDate(new Date(start))}
+              <DateRangeIcon /> {formatDate(new Date(start))}
             </h5>
+            <h5 className="text-[16px] text-gray-700">-</h5>
             <h5 className="text-[16px] text-gray-700">
+              <DateRangeIcon />
               {formatDate(new Date(end))}
             </h5>
           </div>

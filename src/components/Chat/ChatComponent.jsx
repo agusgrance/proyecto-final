@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
@@ -11,6 +12,8 @@ import { getMyUser } from "../../hooks/UseMyUser";
 import { formatDate } from "../../utils/utils";
 
 export default function ChatComponent() {
+  const navigate = useNavigate();
+
   const [newMessage, setNewMessage] = useState("");
   const [receiver, setReceiver] = useState({});
   const messagesRef = useRef(null);
@@ -44,14 +47,17 @@ export default function ChatComponent() {
           ["hidden"]: !receiver?.id,
         })}
       >
-        <div className="flex items-center p-4 border-b-2">
+        <button
+          className="flex items-center p-4 border-b-2 hover:opacity-90"
+          onClick={() => navigate(`/profile/${receiver.id}`)}
+        >
           <Avatar
             src={receiver.avatar}
             alt={receiver.username}
             className="w-10 h-10 rounded-full mr-4"
           />
           <p className="font-bold">{receiver.username}</p>
-        </div>
+        </button>
         <div
           className="flex-1  h-fit bg-gray-100 p-4 overflow-y-auto"
           ref={messagesRef}

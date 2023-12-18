@@ -8,6 +8,7 @@ import MyProfile from "./pages/my-profile";
 import Chat from "./pages/chat";
 import EventID from "./pages/Event/[id]";
 import Admin from "./pages/Admin";
+import Profile from "./pages/profile/[id]";
 
 function RouteList() {
   return (
@@ -19,6 +20,8 @@ function RouteList() {
       <Route path="/my-profile" element={<MyProfile />} />
       <Route path="/chat" element={<Chat />} />
       <Route path="/event/:id" element={<EventID />} />
+      <Route path="/profile/:id" element={<Profile />} />
+
       <Route path="/admin" element={<Admin />} />
     </Routes>
   );

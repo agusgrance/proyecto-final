@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Calendar as CalendarComponent,
   momentLocalizer,
@@ -10,6 +11,7 @@ import { EventContext } from "../../store/Events";
 const localizer = momentLocalizer(moment);
 export function Calendar() {
   const { eventList, loadEvents } = useContext(EventContext);
+  const navigate = useNavigate();
 
   const [events, setEvents] = useState(eventList);
   useEffect(() => {
@@ -36,6 +38,7 @@ export function Calendar() {
         startAccessor="start"
         endAccessor="end"
         style={{ height: "100%" }}
+        onSelectEvent={(event) => navigate(`/event/${event.id}`)}
         eventPropGetter={(event) => ({
           style: {
             backgroundColor: event.color,

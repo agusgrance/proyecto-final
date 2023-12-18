@@ -1,8 +1,11 @@
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useNavigate } from "react-router-dom";
 
 export default function GuestList({ onRemove, guestData, isHost }) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex-none w-full bg-gray-200 rounded-xl p-4 overflow-y-auto shadow-xl">
       <div className="w-full text-center">
@@ -15,7 +18,10 @@ export default function GuestList({ onRemove, guestData, isHost }) {
             key={contact.id}
             className="flex items-center px-4 justify-between mb-4 border-b border-black border-dashed pb-4 "
           >
-            <button className="flex items-center hover:opacity-70">
+            <button
+              className="flex items-center hover:opacity-70"
+              onClick={() => navigate(`/profile/${contact?.guestId}`)}
+            >
               <img
                 src={contact?.guest?.avatar}
                 alt="Avatar"

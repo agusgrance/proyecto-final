@@ -40,8 +40,8 @@ function MyProfile() {
                 >
                   <Event
                     {...event}
-                    classname={"min-h-[450px] h-[450px]"}
-                    imageClassname={"h-[200px]"}
+                    classname={"min-h-fit"}
+                    imageClassname={"max-h-[200px]"}
                   />
                 </div>
               );
